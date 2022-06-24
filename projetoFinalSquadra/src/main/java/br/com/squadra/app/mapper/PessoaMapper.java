@@ -7,6 +7,7 @@ import br.com.squadra.app.dto.endereco.EnderecoResquestDTO;
 import br.com.squadra.app.dto.pessoa.*;
 import br.com.squadra.app.model.Endereco;
 import br.com.squadra.app.model.Pessoa;
+import br.com.squadra.app.vo.PessoaVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;

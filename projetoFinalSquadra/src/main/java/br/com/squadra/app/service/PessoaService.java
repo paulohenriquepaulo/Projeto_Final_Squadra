@@ -1,10 +1,12 @@
 package br.com.squadra.app.service;
 
 import br.com.squadra.app.exception.SquadraException;
+import br.com.squadra.app.mapper.PessoaMapper;
 import br.com.squadra.app.model.Endereco;
 import br.com.squadra.app.model.Pessoa;
 import br.com.squadra.app.repository.EnderecoRepository;
 import br.com.squadra.app.repository.PessoaRepository;
+import br.com.squadra.app.vo.PessoaVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,7 +33,11 @@ public class PessoaService {
     @Autowired
     private BairroService bairroService;
 
+    @Autowired
+    private PessoaMapper mapper;
+
     public List<Pessoa> cadastrarPessoa(Pessoa pessoa) {
+        validarLogin(pessoa.getLogin());
         pessoa.getEnderecos().stream().forEach(endereco -> {
             endereco.setBairro(bairroService.bucarPorCodigo(endereco.getBairro().getCodigoBairro()));
             endereco.setPessoa(pessoa);
@@ -41,8 +48,14 @@ public class PessoaService {
         return pessoas;
     }
 
+    private void validarLogin(String login) {
+        if (pessoaRepository.existsByLogin(login)) {
+            throw new SquadraException("O login " + login + " já existe ", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+    }
+
     public List<Pessoa> atulaziarPessoa(Pessoa pessoa) {
-        validarPessoa(pessoa.getCodigoPessoa());
+        validarPessoa(pessoa.getCodigoPessoa(), pessoa.getLogin(), pessoa.getSenha());
         List<Endereco> enderecosAtuais = enderecoRepository.getByPessoa(pessoa);
         List<Endereco> enderecosEditados = new ArrayList<>();
         List<Endereco> enderecosNovos = new ArrayList<>();
@@ -93,9 +106,16 @@ public class PessoaService {
     }
 
 
-    private void validarPessoa(Long codigPessoa) {
-        if (pessoaRepository.countByCodigoPessoa(codigPessoa) == 0) {
+    private void validarPessoa(Long codigPessoa, String login, String senha) {
+        if (!pessoaRepository.existsById(codigPessoa)) {
             throw new SquadraException("Pessoa não encotrada!", HttpStatus.NOT_FOUND);
+        } else {
+            PessoaVO pessoaVO = pessoaRepository.recuperarDadosLogin(codigPessoa);
+            if (!pessoaVO.getLogin().equals(login)) {
+                throw new SquadraException("Login não cadastrado!", HttpStatus.NOT_FOUND);
+            } else if (!pessoaVO.getSenha().equals(senha)) {
+                throw new SquadraException("A senha está incorreta!", HttpStatus.NOT_FOUND);
+            }
         }
     }
 
