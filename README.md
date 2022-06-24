@@ -1,4 +1,4 @@
-![img.png](img.png)
+![img.png](projetoFinalSquadra/src/main/java/br/com/squadra/app/imagens/img.png)
 
 # 💻 DESAFIO FINAL - New Thinkes Program 2022:
 
@@ -46,16 +46,16 @@ As mensagens de erro devem vir sempre em português
 
 1 - Cadastrar UF - **POST** ✅️
 
-![img_7.png](img_7.png)
+![img_7.png](projetoFinalSquadra/src/main/java/br/com/squadra/app/imagens/img_7.png)
 
 2 - Atualizar UF - **PUT** ☑️
 
-![img_8.png](img_8.png)
+![img_8.png](projetoFinalSquadra/src/main/java/br/com/squadra/app/imagens/img_8.png)
 
 3 - Buscar UF por criterio - **GET** 🔍
 
-![img_9.png](img_9.png)
+![img_9.png](projetoFinalSquadra/src/main/java/br/com/squadra/app/imagens/img_9.png)
 
 4 - Deletar UF por sigla - **DELETE** ❌
 
-![img_10.png](img_10.png)
+![img_10.png](projetoFinalSquadra/src/main/java/br/com/squadra/app/imagens/img_10.png)
