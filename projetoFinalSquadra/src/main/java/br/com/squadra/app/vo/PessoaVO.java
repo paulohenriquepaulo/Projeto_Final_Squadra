@@ -2,6 +2,10 @@ package br.com.squadra.app.vo;
 
 public class PessoaVO {
 
+    private String login;
+
+    private String senha;
+
     public PessoaVO() {
         super();
     }
@@ -12,9 +16,6 @@ public class PessoaVO {
         this.senha = senha;
     }
 
-    private String login;
-
-    private String senha;
 
     public String getLogin() {
         return login;
@@ -31,4 +32,6 @@ public class PessoaVO {
     public void setSenha(String senha) {
         this.senha = senha;
     }
+
+
 }

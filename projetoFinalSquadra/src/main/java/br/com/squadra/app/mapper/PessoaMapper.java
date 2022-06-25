@@ -22,6 +22,8 @@ public interface PessoaMapper extends BaseMapper {
     @Mapping(target = "status", source = "status", qualifiedByName = "statusEnumConverter")
     Pessoa toPessoa(PessoaResquestDTO pessoaResquestDTO);
 
+    Pessoa toPessoa(PessoaVO pessoaVO);
+
     @Mapping(target = "status", source = "status", qualifiedByName = "statusIntegerConverter")
     @Mapping(target = "enderecos", source = "enderecos", qualifiedByName = "converterListaEnderecoDTO")
     PessoaResponseCadastroDTO toPessoaResponseDTO(Pessoa pessoa);

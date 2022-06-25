@@ -18,7 +18,6 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -110,7 +109,7 @@ public class PessoaService {
         if (!pessoaRepository.existsById(codigPessoa)) {
             throw new SquadraException("Pessoa não encotrada!", HttpStatus.NOT_FOUND);
         } else {
-            PessoaVO pessoaVO = pessoaRepository.recuperarDadosLogin(codigPessoa);
+            PessoaVO pessoaVO = pessoaRepository.recuperarDadosCodigoPessoa(codigPessoa);
             if (!pessoaVO.getLogin().equals(login)) {
                 throw new SquadraException("Login não cadastrado!", HttpStatus.NOT_FOUND);
             } else if (!pessoaVO.getSenha().equals(senha)) {
@@ -178,4 +177,19 @@ public class PessoaService {
         });
     }
 
+    public void atualizarSenha(String login, String senhaAtual, String senhaNova, String repetirSenha) {
+        if (!pessoaRepository.existsByLogin(login)) {
+            throw new SquadraException("O login " + login + " não existe!", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        Pessoa pessoa = pessoaRepository.getByLogin(login);
+        if (!pessoa.getSenha().equals(senhaAtual)) {
+            throw new SquadraException("A senha atual está errada!", HttpStatus.NOT_FOUND);
+        } else if (pessoa.getSenha().equals(senhaNova)) {
+            throw new SquadraException("A senha nova não pode ser igual a senha antiga!", HttpStatus.NOT_FOUND);
+        } else if (!senhaNova.equals(repetirSenha)) {
+            throw new SquadraException("A senha do campo 'senhataAtual' precisa ser igual a senha do campo 'repetirSenha'", HttpStatus.NOT_FOUND);
+        }
+        pessoa.setSenha(senhaNova);
+        pessoaRepository.save(pessoa);
+    }
 }

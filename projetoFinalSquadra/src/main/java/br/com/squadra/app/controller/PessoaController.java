@@ -4,6 +4,7 @@ import br.com.squadra.app.dto.pessoa.*;
 import br.com.squadra.app.mapper.PessoaMapper;
 import br.com.squadra.app.model.Pessoa;
 import br.com.squadra.app.service.PessoaService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,4 +54,13 @@ public class PessoaController {
         }
     }
 
+    @PatchMapping
+    public ResponseEntity atualizarSenha(@RequestBody @Valid PessoaResquestAtualizarSenhaDTO atualizarSenhaDTO) {
+        service.atualizarSenha(
+                atualizarSenhaDTO.getLogin(),
+                atualizarSenhaDTO.getSenhaAtual(),
+                atualizarSenhaDTO.getSenhaNova(),
+                atualizarSenhaDTO.getRepetirSenha());
+        return ResponseEntity.ok().build();
+    }
 }
