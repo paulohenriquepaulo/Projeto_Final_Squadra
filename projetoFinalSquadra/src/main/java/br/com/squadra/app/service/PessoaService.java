@@ -192,4 +192,11 @@ public class PessoaService {
         pessoa.setSenha(senhaNova);
         pessoaRepository.save(pessoa);
     }
+
+    public List<Pessoa> deletarPorCodigo(Long codigoPessoa) {
+        pessoaRepository.delete(bucarPorCodigo(codigoPessoa));
+        List<Pessoa> pessoas = listarPessoas();
+        pessoas.forEach(p -> p.setEnderecos(new ArrayList<>()));
+        return pessoas;
+    }
 }

@@ -1,8 +1,10 @@
 package br.com.squadra.app.controller;
 
 import br.com.squadra.app.dto.pessoa.*;
+import br.com.squadra.app.dto.uf.UfResponseDTO;
 import br.com.squadra.app.mapper.PessoaMapper;
 import br.com.squadra.app.model.Pessoa;
+import br.com.squadra.app.model.Uf;
 import br.com.squadra.app.service.PessoaService;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,5 +64,13 @@ public class PessoaController {
                 atualizarSenhaDTO.getSenhaNova(),
                 atualizarSenhaDTO.getRepetirSenha());
         return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{codigoPessoa}")
+    public ResponseEntity<List<PessoaResponseDTO>> deletarPorSigla(@PathVariable Long codigoPessoa) {
+        List<Pessoa> pessoas = service.deletarPorCodigo(codigoPessoa);
+        List<PessoaResponseDTO> dtos = pessoas.stream().map(pessoa -> mapper.toPessoaPorCodigoResponseDTO(pessoa))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(dtos);
     }
 }
